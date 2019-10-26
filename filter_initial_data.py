@@ -12,7 +12,7 @@ import click
 from m123file import M123File
 
 arx = 'llista_arx_'
-123_COLUMN_LIST = ['date','second_sent','type','mmsi','status','turn', 'speed','lon','lat','course','heading']
+M123_COLUMN_LIST = ['date','second_sent','type','mmsi','status','turn', 'speed','lon','lat','course','heading']
 
 def process_file(m123_file, m5_file):
     #%% READ FILES
@@ -22,19 +22,8 @@ def process_file(m123_file, m5_file):
     m5 = pd.read_csv(m5_file,sep=",")
     m5.columns =['type','mmsi','shipname', 'shiptype','to_bow','to_stern', 'to_port','to_starboard', 'draught']
 
-    tstampS = np.array(m123.second_sent)
-
-    idata = len(tstampS)    #initial amount of data
-
     #%% filter messages 123
-
-    # messages with tstamp error at the source
-    ind = np.where(m123.second_sent >= 60)        #bad tstamp
-
-    err = len(ind[0])
-
-    m123 = m123.drop(m123.index[ind])    #clean bad stamps
-
+    m123.cleanTStamp(60)
 
     #% clean lat lon wrong values
     ind = np.where(m123.lat >= 91)          # detect errors in AIS data

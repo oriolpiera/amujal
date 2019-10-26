@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import pandas as pd
+import numpy as np
 
 class M123File(object):
 
@@ -13,5 +14,27 @@ class M123File(object):
 
     def getColumns(self):
         return self.mfile.columns
-        
 
+
+    def cleanTStamp(self, value):
+        ind = np.where(self.mfile.second_sent >= value)
+        err = len(ind[0])
+        self.mfile = self.mfile.drop(self.mfile.index[ind])
+
+    def toArray(self):
+        return self.mfile.astype(str).values.flatten().tolist()
+
+
+#Other section
+#
+#    def toString(self):
+#        return self.mfile.second_sent.to_string(index=4)
+#
+#    def __str__(self):
+#        return self.mfile.to_string()
+#
+#    def __copy__(self):
+#        return self.mfile.copy()
+#
+#    def compare_dataframes(self, dataframe):
+#        return pd.concat([self.mfile, dataframe]).drop_duplicates(keep=False)
