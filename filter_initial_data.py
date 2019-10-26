@@ -23,20 +23,11 @@ def process_file(m123_file, m5_file):
     m5.columns =['type','mmsi','shipname', 'shiptype','to_bow','to_stern', 'to_port','to_starboard', 'draught']
 
     #%% filter messages 123
-    m123.cleanTStamp(60)
+    m123.cleanColumn('second_sent', 60)
 
     #% clean lat lon wrong values
-    ind = np.where(m123.lat >= 91)          # detect errors in AIS data
-
-    err = err + len(ind[0])             #accumulated error
-
-    m123 = m123.drop(m123.index[ind])  #clean bad latitude
-
-    ind = np.where(m123.lon >= 181)         # detect errors in AIS data 
-
-    err = err + len(ind[0])             #accumulated error
-
-    m123 = m123.drop(m123.index[ind])  #clean bad latitude
+    m123.cleanColumn('lat',91)
+    m123.cleanColumn('lon',181)
 
     #% Finding lat-long boundaries
     lat = np.array(m123.lat)

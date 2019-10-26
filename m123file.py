@@ -15,9 +15,11 @@ class M123File(object):
     def getColumns(self):
         return self.mfile.columns
 
-
     def cleanTStamp(self, value):
-        ind = np.where(self.mfile.second_sent >= value)
+        self.cleanColumn('second_sent', value)
+
+    def cleanColumn(self, column_name, value):
+        ind = np.where(self.mfile[column_name] >= value)
         err = len(ind[0])
         self.mfile = self.mfile.drop(self.mfile.index[ind])
 
