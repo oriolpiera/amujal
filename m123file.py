@@ -8,7 +8,7 @@ class M123File(object):
         self.mfile = pd.read_csv(file_path, sep, header)
         self.mfile.columns = column_list
 
-    def dropColumn(self, column_list):
+    def dropColumns(self, column_list):
         self.mfile = self.mfile.drop(columns = column_list)
 
     def getColumns(self):
